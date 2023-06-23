@@ -1,0 +1,85 @@
+<div class="container py-5" style="background-color: #ffffff; min-height: 100vh;">
+  <header class="d-flex flex-wrap justify-content-center py-3 mb-4">
+    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-decoration-none">
+      <img [src]="logoUrl" class="me-2" height="50" alt="Logo">
+      <h1 class="display-4 fw-bold text-center text-dark" style="width: 100%;">Online Trading Platform</h1>
+    </a>
+  </header>
+
+  <!-- Current Balance -->
+  <div class="mb-4">
+    <h4>Your Current Balance: ${{ balance }}</h4>
+  </div>
+
+  <div class="mb-4">
+    <h2 class="mb-3">Trade Stocks</h2>
+    <div class="input-group mb-3">
+      <select class="form-select" [(ngModel)]="selectedStock">
+        <option *ngFor="let stock of stocks" [value]="stock">{{stock.name}} - ${{stock.price}}</option>
+      </select>
+      <input type="number" class="form-control" [(ngModel)]="quantity" placeholder="Quantity">
+    </div>
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+      <button class="btn btn-primary me-md-2" type="button" (click)="buy()" [disabled]="!selectedStock">Buy</button>
+      <button class="btn btn-warning" type="button" (click)="sell()" [disabled]="!selectedStock">Sell</button>
+      <button class="btn btn-danger me-md-2" type="button" (click)="shortSell()" [disabled]="!selectedStock">Short Sell</button>
+      <button class="btn btn-success" type="button" (click)="buyToCover()" [disabled]="!selectedStock">Buy to Cover</button>
+    </div>
+  </div>
+
+  <!-- Order Summary Section -->
+  <div class="mb-4">
+    <h2 class="mb-3">Order Summary</h2>
+    <div class="mb-3">
+      <label class="form-label">Price Per Share:</label>
+      <input type="text" [value]="selectedStock?.price | currency" class="form-control" readonly>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Amount:</label>
+      <input type="text" [value]="quantity" class="form-control" readonly>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Total:</label>
+      <input type="text" [value]="total | currency" class="form-control" readonly>
+    </div>
+    <div class="d-grid gap-2">
+      <button class="btn btn-primary" type="button" (click)="submitOrder()">Submit Order</button>
+    </div>
+  </div>
+
+  <!-- Notification System -->
+  <div *ngIf="message" class="alert alert-primary" role="alert">
+    {{ message }}
+  </div>
+
+  <div class="mb-5">
+    <h2>Your Portfolio</h2>
+    <table class="table">
+      <thead>
+        <tr>
+        <th scope="col">#</th>
+        <th scope="col">Stock</th>
+        <th scope="col">Quantity</th>
+      </tr>
+     
+    </thead>
+    <tbody>
+    <tr *ngFor="let holding of holdings; index as i">
+      <th scope="row">{{i + 1}}</th>
+      <td>{{holding.stock.name}}</td>
+      <td>{{holding.quantity}}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Loading Spinner -->
+<div *ngIf="isLoading" class="spinner-border" role="status">
+  <span class="visually-hidden">Loading...</span>
+</div>
+
+<footer class="pt-3 mt-4 text-muted border-top">
+  &copy; 2023 Online Trading Platform
+</footer>
+</div>
+

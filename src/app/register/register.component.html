@@ -1,0 +1,77 @@
+<div class="container py-5">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <div class="card">
+        <h5 class="card-header text-center">Register</h5>
+        <div class="card-body">
+          <form [formGroup]="registerForm" (ngSubmit)="register()">
+
+            <!-- First Name -->
+            <div class="form-group">
+              <label for="firstName">First Name</label>
+              <input id="firstName" type="text" class="form-control" formControlName="firstName" required>
+              <div *ngIf="getControl('firstName')?.invalid && getControl('firstName')?.touched" class="text-danger">
+                First name is required.
+              </div>
+            </div>
+
+            <!-- Last Name -->
+            <div class="form-group">
+              <label for="lastName">Last Name</label>
+              <input id="lastName" type="text" class="form-control" formControlName="lastName" required>
+              <div *ngIf="getControl('lastName')?.invalid && getControl('lastName')?.touched" class="text-danger">
+                Last name is required.
+              </div>
+            </div>
+
+            <!-- Username -->
+            <div class="form-group">
+              <label for="username">Username</label>
+              <input id="username" type="text" class="form-control" formControlName="username" required>
+              <div *ngIf="getControl('username')?.invalid && getControl('username')?.touched" class="text-danger">
+                Username is required.
+              </div>
+            </div>
+
+            <!-- Password -->
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input id="password" type="password" class="form-control" formControlName="password" required>
+              <div *ngIf="getControl('password')?.invalid && getControl('password')?.touched" class="text-danger">
+                Password is required.
+              </div>
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="form-group">
+              <label for="confirmPassword">Confirm Password</label>
+              <input id="confirmPassword" type="password" class="form-control" formControlName="confirmPassword" required>
+              <div *ngIf="getControl('confirmPassword')?.invalid && getControl('confirmPassword')?.touched" class="text-danger">
+                Please confirm your password.
+              </div>
+            </div>
+
+            <!-- Alert message -->
+            <div *ngIf="message" class="alert alert-primary" role="alert">
+              {{ message }}
+            </div>
+
+            <!-- Submit button -->
+            <div class="d-grid gap-2">
+              <button type="submit" class="btn btn-primary" [disabled]="registerForm.invalid || isSubmitting">
+                <span *ngIf="!isSubmitting">Register</span>
+                <span *ngIf="isSubmitting">
+                  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                  Loading...
+                </span>
+              </button>
+            </div>
+          </form>
+        </div>
+        <div class="card-footer text-center">
+          <small>Already have an account? <a routerLink="/login">Login</a></small>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Online Trading Platform</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="login.component.css">
+</head>
+
+<body>
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container d-flex justify-content-center">
+        <a class="navbar-brand" href="#">Online Trading Platform</a>
+      </div>
+    </nav>
+  </header>
+  <main class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <form (submit)="onLogin()">
+      <h3 class="text-center mb-3">Login</h3>
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input id="username" type="text" [(ngModel)]="username" class="form-control" required>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input id="password" type="password" [(ngModel)]="password" class="form-control" required>
+      </div>
+
+      <p class="text-danger" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+      <div class="d-flex justify-content-center">
+        <button type="submit" class="btn btn-primary" [disabled]="isSubmitting">
+          <span *ngIf="!isSubmitting">Login</span>
+          <span *ngIf="isSubmitting">
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            <span class="visually-hidden">Loading...</span>
+          </span>
+        </button>
+      </div>
+    </form>
+  </main>
+  <footer class="sticky-footer">
+    <div class="container text-center">
+      <span>© 2023 Online Trading Platform. All rights reserved.</span>
+    </div>
+  </footer>
+</body>
+
+</html>

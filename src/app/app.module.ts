@@ -11,13 +11,15 @@ import { LoginComponent } from './login/login.component';
 
 import { StockService } from './services/stock.service';
 import { UserService } from './services/user.service';
+import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TradeComponent,
     RegisterComponent,
-    LoginComponent
+    LoginComponent,
+    LeaderboardComponent
   ],
   imports: [
     BrowserModule,

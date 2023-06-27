@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { tap } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { Stock, Holding, StockService } from '../services/stock.service';
 
@@ -16,7 +17,7 @@ export class TradeComponent implements OnInit, OnDestroy {
   isLoading: boolean = false;
   message: string = '';
   logoUrl: string = 'assets/your_logo.png'; 
-  
+
   get total(): number { return (this.selectedStock?.price ?? 0) * this.quantity; }
 
   balanceSubscription: Subscription = new Subscription();
@@ -36,19 +37,49 @@ export class TradeComponent implements OnInit, OnDestroy {
   }
 
   buy(): void {
-    this.stockService.buy(this.selectedStock, this.quantity).subscribe(() => this.message = 'Buy operation successful!');
+    if (this.total <= this.balance) {
+      this.isLoading = true;
+      this.stockService.buy(this.selectedStock, this.quantity).pipe(
+        tap(() => {
+          this.balance -= this.total;
+          this.message = 'Buy operation successful!';
+        })
+      ).subscribe(() => this.isLoading = false);
+    } else {
+      this.message = 'Insufficient balance for this operation.';
+    }
   }
 
   sell(): void {
-    this.stockService.sell(this.selectedStock, this.quantity).subscribe(() => this.message = 'Sell operation successful!');
+    this.isLoading = true;
+    this.stockService.sell(this.selectedStock, this.quantity).pipe(
+      tap(() => {
+        this.balance += this.total;
+        this.message = 'Sell operation successful!';
+      })
+    ).subscribe(() => this.isLoading = false);
   }
 
   shortSell(): void {
-    this.stockService.shortSell(this.selectedStock, this.quantity).subscribe(() => this.message = 'Short sell operation successful!');
+    // Assuming for this example that you can always short sell.
+    this.isLoading = true;
+    this.stockService.shortSell(this.selectedStock, this.quantity).pipe(
+      tap(() => {
+        this.balance -= this.total; // Update with the proper calculation for short selling
+        this.message = 'Short sell operation successful!';
+      })
+    ).subscribe(() => this.isLoading = false);
   }
 
   buyToCover(): void {
-    this.stockService.buyToCover(this.selectedStock, this.quantity).subscribe(() => this.message = 'Buy to cover operation successful!');
+    // Assuming for this example that you can always buy to cover.
+    this.isLoading = true;
+    this.stockService.buyToCover(this.selectedStock, this.quantity).pipe(
+      tap(() => {
+        this.balance += this.total; // Update with the proper calculation for buy to cover
+        this.message = 'Buy to cover operation successful!';
+      })
+    ).subscribe(() => this.isLoading = false);
   }
 
   submitOrder(): void {

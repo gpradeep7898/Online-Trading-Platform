@@ -1,5 +1,7 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 export interface Stock {
   name: string;
@@ -15,15 +17,41 @@ export interface Holding {
   providedIn: 'root'
 })
 export class StockService {
+  private alphaVantageApiKey: string = '67868ISXYQBXB2O7';
+  private stockSymbols: string[] = ['AAPL', 'MSFT', 'AMZN', 'GOOGL', 'FB', 'TSLA', 'BRK.B', 'JPM', 'JNJ', 'V'];
+
   private balance$: BehaviorSubject<number> = new BehaviorSubject<number>(10000);
-  private stocks$: BehaviorSubject<Stock[]> = new BehaviorSubject<Stock[]>([
-    { name: 'Apple', price: 150 },
-    { name: 'Microsoft', price: 200 },
-    { name: 'Tesla', price: 600 },
-    { name: 'J.P. Morgan Chase & Co', price: 300 },
-    { name: 'Wells Fargo & Company', price: 800 }
-  ]);
+  private stocks$: BehaviorSubject<Stock[]> = new BehaviorSubject<Stock[]>([]);
   private holdings$: BehaviorSubject<Holding[]> = new BehaviorSubject<Holding[]>([]);
+
+  constructor(private http: HttpClient) {
+    this.updateStockPrices();
+  }
+
+  updateStockPrices(): void {
+    this.stockSymbols.forEach(symbol => {
+      const url = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${this.alphaVantageApiKey}`;
+
+      this.http.get(url).pipe(
+        map((response: any) => ({
+          name: response['Global Quote']['01. symbol'],
+          price: +response['Global Quote']['05. price']
+        }))
+      ).subscribe(stock => {
+        let currentStocks = this.stocks$.value;
+        const stockIndex = currentStocks.findIndex(s => s.name === stock.name);
+
+        if (stockIndex > -1) {
+          currentStocks[stockIndex] = stock;
+        } else {
+          currentStocks.push(stock);
+        }
+
+        this.stocks$.next(currentStocks);
+      });
+    });
+  }
+  
 
   getBalance(): Observable<number> {
     return this.balance$.asObservable();

@@ -18,11 +18,11 @@
              
             </thead>
             <tbody>
-            <tr *ngFor="let player of players; let i = index" [ngClass]="{'highlighted-row': i === 0}">
+            <tr *ngFor="let player of players; let i = index"  [ngClass]="{'highlighted-row': i === 0}">
               
               <td>{{ player.name }}</td>
               <td>{{ player.balance }}</td>
-              <td>{{ player.rank }}</td>
+              <td scope="row">{{i + 1}}</td>
             </tr>
             </tbody>
           </table>

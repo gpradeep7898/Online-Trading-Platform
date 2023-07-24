@@ -1,38 +1,38 @@
 <div class="leaderboard">
-    <div class="row">
-        <div class="col-md-6">
-        <div class="image-container">
-            <img src="https://pixabay.com/vectors/win-prize-trophy-cup-icon-gold-5834110/" alt="Image" class="leaderboard-image">
-          </div>
+  <div class="row">
+      <div class="col-md-6">
+      <div class="image-container">
+          <img src="https://pixabay.com/vectors/win-prize-trophy-cup-icon-gold-5834110/" alt="Image" class="leaderboard-image">
         </div>
-      <div class="col-md-12">
-        <div class="mb-5 mt-5">
-            <h2>Leaderboard</h2>
-            <table class="table table-bordered leaderboard-table">
-              <thead>
-                <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Balance</th>
-                <th scope="col">Rank</th>
-              </tr>
-             
-            </thead>
-            <tbody>
-            <tr *ngFor="let player of players; let i = index" [ngClass]="{'highlighted-row': i === 0}">
-              
-              <td>{{ player.name }}</td>
-              <td>{{ player.balance }}</td>
-              <td>{{ player.rank }}</td>
+      </div>
+    <div class="col-md-12">
+      <div class="mb-5 mt-5">
+          <h2>Leaderboard</h2>
+          <table class="table table-bordered leaderboard-table">
+            <thead>
+              <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Balance</th>
+              <th scope="col">Rank</th>
             </tr>
-            </tbody>
-          </table>
-        </div>
-    </div>
+           
+          </thead>
+          <tbody>
+          <tr *ngFor="let player of players; let i = index"  [ngClass]="{'highlighted-row': i === 0}">
+            
+            <td>{{ player.name }}</td>
+            <td>{{ player.balance }}</td>
+            <td scope="row">{{i + 1}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+  </div>
 </div>
 </div>
-        
-        
-        
+      
+      
+      
 
 
 
